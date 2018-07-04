@@ -7,6 +7,11 @@ function RemoveApp{
     Get-AppxPackage $name -AllUsers | Remove-AppxPackage
     Get-AppXProvisionedPackage -Online | Where DisplayNam -like $name | Remove-AppxProvisionedPackage -Online
 }
+function RemoveItemOnDesktop{    param(        [string]$strFileName    )    $desktopPath = [Environment]::GetFolderPath("Desktop")
+    $fileToTemove = Join-Path $desktopPath $strFileName
+    If (Test-Path $fileToTemove){
+	    Remove-Item $fileToTemove
+    }}
 
 Disable-UAC
 
@@ -72,6 +77,9 @@ RemoveApp "Microsoft.MSPaint"
 # Prevent "Suggested Applications" from returning
 if (!(Test-Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent")) {New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Type Folder | Out-Null}
 Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" "DisableWindowsConsumerFeatures" 1
+
+#--- Cleanup Desktop---#
+RemoveItemOnDesktop "Microsoft Edge.lnk"
 
 #--- reenabling critial items ---
 Enable-UAC
