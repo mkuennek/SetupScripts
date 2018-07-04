@@ -9,8 +9,11 @@ choco install visualstudio2017-workload-manageddesktop
 choco install visualstudio2017-workload-nativedesktop
 choco install visualstudio2017-workload-universal
 
-#-- Visual Studio Extensions ---#
+#--- Visual Studio Extensions ---#
 choco install resharper
 choco install stylecop
+
+#--- Setup Sources folder and set it as default in VS ---#
+New-Item -ItemType Directory -Force -Path C:\sources
 
 Enable-UAC
