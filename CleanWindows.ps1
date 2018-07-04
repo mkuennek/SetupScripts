@@ -29,6 +29,9 @@ Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 Write-Host "Configuring Windows..." -ForegroundColor "Yellow"
 Set-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" "BingSearchEnabled" 0
 Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" "AllowCortana" 0
+# Prevent Windows from installing suggested apps
+if (!(Test-Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent")) {New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Type Folder | Out-Null}
+Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" "DisableWindowsConsumerFeatures" 1
 # Uninstall preinstalled apps
 Write-Host "Removing preinstalled Apps" -ForegroundColor "Yellow"
 RemoveApp "Microsoft.3DBuilder"
@@ -74,9 +77,6 @@ RemoveApp "Microsoft.NetworkSpeedTest"
 RemoveApp "Microsoft.WindowsFeedbackHub"
 RemoveApp "Microsoft.GetHelp"
 RemoveApp "Microsoft.MSPaint"
-# Prevent "Suggested Applications" from returning
-if (!(Test-Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent")) {New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Type Folder | Out-Null}
-Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" "DisableWindowsConsumerFeatures" 1
 
 #--- Cleanup Desktop---#
 RemoveItemOnDesktop "Microsoft Edge.lnk"

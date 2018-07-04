@@ -6,11 +6,15 @@
 Disable-UAC
 
 #--- Utility Programs ---#
+choco install chocolatey
 choco install -y Microsoft-Hyper-V-All -source windowsFeatures
 choco install -y sysinternals
 choco install -y docker-for-windows
 choco install 7zip.install
 choco install notepadplusplus.install
+
+#--- enable the windows container feature ---#
+Enable-WindowsOptionalFeature -Online -FeatureName containers –All
 
 #--- Cleanup Desktop---#
 RemoveItemOnDesktop "Docker for Windows.lnk"
